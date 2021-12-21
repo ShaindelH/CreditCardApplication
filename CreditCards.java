@@ -1,7 +1,8 @@
-package FinalProject;
+package finalProject;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 public class CreditCards {
 
@@ -11,17 +12,17 @@ public class CreditCards {
 		creditCards = new ArrayList<>();
 	}
 
-	public String getActiveCards() {
+	public ArrayList<String> getActiveCards() {
 
-		StringBuilder str = new StringBuilder();
+		ArrayList<String> activeCards = new ArrayList<>();
 
 		for (int i = 0; i < creditCards.size(); i++) {
 
 			if (creditCards.get(i).getStatus().equals(CreditCardStatus.ACTIVE)) {
-				str.append(creditCards.get(i));
+				activeCards.add(creditCards.get(i).getCreditCardID());
 			}
 		}
-		return str.toString();
+		return activeCards;
 	}
 
 	public double totalBalance() {
@@ -59,47 +60,71 @@ public class CreditCards {
 			creditCards.add(newCC);
 		}
 	}
-
+	
 	public void removeCard(String creditCardID) {
 
-		if (!creditCards.contains(creditCardID)) {
-			creditCards.remove(creditCards.indexOf(creditCardID));   //or just remove???
+		int cardIndex = getCardIndex(creditCardID);
+		if (cardIndex > 0 ) {
+			creditCards.remove(cardIndex);
 		}
+		else
+			throw new NoSuchElementException();
 	}
 
 	public boolean findCard(String creditCardID) {
 
-		if (!creditCards.contains(creditCardID)) {
+		if (getCardIndex(creditCardID) > 0 ) {
 			return true;
 		}
 		return false;
 	}
-
-	//throw exception?????????????????????
-
-	public void addPurchase(String creditCardID, LocalDate transactionDate, TransactionType transactionType, PurchaseType purchaseType,
-			Vendor vendor, double amount) {
+	
+	public int getCardIndex(String creditCardID) {
 		
-		if (creditCards.contains(creditCardID)) {
-			creditCards.indexOf(creditCardID).addPurchase(transactionDate, transactionType, purchaseType, vendor, amount);
+		for (int i = 0; i < creditCards.size(); i++) {
+			
+			if(creditCardID.equals(creditCards.get(i).getCreditCardID())){
+				return i;
+			}
 		}
+		//if not found
+		return -1;
+	}
+
+	public void addPurchase(String creditCardID, LocalDate transactionDate, TransactionType transactionType,
+			PurchaseType purchaseType, Vendor vendor, double amount) {
+
+		int cardIndex = getCardIndex(creditCardID);
+		if (cardIndex > 0 ) {
+			creditCards.get(cardIndex).addPurchase(transactionDate, transactionType, amount, purchaseType, vendor);
+		}
+		else 
+			throw new NoSuchElementException();
 
 	}
 
-	public void addPayment(String creditCardID, LocalDate transactionDate, TransactionType transactionType, PaymentType paymentType,
-			BankAccount account, double amount) {
+	public void addPayment(String creditCardID, LocalDate transactionDate, TransactionType transactionType,
+			PaymentType paymentType, BankAccount account, double amount) {
 		
-		if (creditCards.contains(creditCardID)) {
-			creditCards.indexOf(creditCardID).addPayment(transactionDate, transactionType, paymentType, account, amount);
+		int cardIndex = getCardIndex(creditCardID);
+		if (cardIndex > 0 ) {
+			creditCards.get(cardIndex).addPayment(transactionDate, transactionType, amount, paymentType, account);
 		}
+		else 
+			throw new NoSuchElementException();
 	}
 
-	public void addFee(String creditCardID, LocalDate transactionDate, TransactionType transactionType, FeeType feeType, double amount) {
-		
-		if (creditCards.contains(creditCardID)) {
-			creditCards.indexOf(creditCardID).addFee(transactionDate, transactionType, feeType, amount);
+	public void addFee(String creditCardID, LocalDate transactionDate, TransactionType transactionType, FeeType feeType,
+			double amount) {
+
+		int cardIndex = getCardIndex(creditCardID);
+		if (cardIndex > 0 ) {
+			creditCards.get(cardIndex).addFee(transactionDate, transactionType, amount, feeType);
 		}
+		else 
+			throw new NoSuchElementException();
 	}
 	
+
 
 }

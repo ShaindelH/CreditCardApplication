@@ -1,4 +1,4 @@
-package FinalProject;
+package finalProject;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -14,12 +14,15 @@ public class CreditCard {
 	private CreditCardStatus status;
 	private double creditCardLimit;
 	private double currentBalance;
-	
+	private ArrayList<Transaction> transactions;
+
 	private Purchase lastPurchase;
 	private Payment lastPayment;
 
-	// private ArrayList <Transaction> transactions;
-
+	public CreditCard(String creditCardID, String issueCompany) {
+		this.creditCardID = creditCardID;
+		this.issueCompany = issueCompany;
+	}
 	public CreditCard(String creditCardID, LocalDate issueDate, LocalDate expirationDate, String issueCompany,
 			CreditCardType creditCardType, CreditCardStatus status, double creditCardLimit, double currentBalance) {
 
@@ -33,34 +36,42 @@ public class CreditCard {
 		this.currentBalance = currentBalance;
 	}
 
-	
-	public void addPurchase(LocalDate transactionDate, TransactionType transactionType, PurchaseType purchaseType,
-			Vendor vendor, double amount) {
-		
+	public String getCreditCardID() {
+		return creditCardID;
+	}
+
+	public void addPurchase(LocalDate transactionDate, TransactionType transactionType, double amount, PurchaseType purchaseType,
+			Vendor vendor) throws InsuffienctFundsException {
+
 		if (amount <= getAvailCredit()) {
-			Purchase newPurchase = new Purchase(transactionDate, transactionType, purchaseType, vendor, amount)
+			Purchase newPurchase = new Purchase(transactionDate, transactionType, amount, purchaseType, vendor);
 			transactions.add(newPurchase);
-			
+
 			lastPurchase = newPurchase;
-		}
+		} else
+			throw new InsuffienctFundsException();
 	}
 
-	public void addPayment(LocalDate transactionDate, TransactionType transactionType, PaymentType paymentType,
-			BankAccount account, double amount) {
+	public void addPayment(LocalDate transactionDate, TransactionType transactionType, double amount, PaymentType paymentType,
+			BankAccount account) throws InsuffienctFundsException {
 
 		if (amount <= getAvailCredit()) {
-			Payment newPayment = new Payment(transactionDate, transactionDate, paymentType, account, amount);
+			Payment newPayment = new Payment(transactionDate, transactionType, amount, paymentType, account);
 			transactions.add(newPayment);
-			
+
 			lastPayment = newPayment;
-		}
+
+		} else
+			throw new InsuffienctFundsException();
 	}
 
-	public void addFee(LocalDate transactionDate, TransactionType transactionType, FeeType feeType, double amount) {
+	public void addFee(LocalDate transactionDate, TransactionType transactionType, double amount, FeeType feeType)
+			throws InsuffienctFundsException {
 
 		if (amount <= getAvailCredit()) {
-			transactions.add(new Fee(transactionDate, transactionDate, feeType, amount));
-		}
+			transactions.add(new Fee(transactionDate, transactionType, amount, feeType));
+		} else
+			throw new InsuffienctFundsException();
 	}
 
 	public double getCurrentBalance() {
@@ -79,30 +90,26 @@ public class CreditCard {
 	public Purchase getLargestPurchase() {
 
 		Iterator<Transaction> iter = transactions.iterator();
+		Purchase largest = null;
 
-		if (!transaction.isEmpty()) {
-			Purchase largest;
+		while (iter.hasNext()) {
+			Transaction current = iter.next();
 
-			while (iter.hasNext()) {
-				Transaction current = iter.next();
-
-				if (current instanceof Purchase) {
-					if (largest == null) {
-						largest = (Purchase) current;
-					} else if ((Purchase) current.compareTo(largest) > 0) {
-						largest = current;
-					}
+			if (current instanceof Purchase) {
+				if (largest == null) {
+					largest = (Purchase) current;
+				} else if (current.compareTo(largest) > 0) {
+					largest = (Purchase) current;
 				}
 			}
-			return largest;
-		} else
-			return null;
+		}
 
+		return largest;
 	}
 
 	public double getTotalFees() {
 
-		Iterator<Transaction> iter = Transaction.iterator();
+		Iterator<Transaction> iter = transactions.iterator();
 
 		double totalFees = 0;
 
@@ -110,21 +117,20 @@ public class CreditCard {
 			Transaction current = iter.next();
 
 			if (current instanceof Fee) {
-				totalFees += Fee.getFeeAmount();
+				totalFees += current.getAmount();
 			}
 		}
-
 		return totalFees;
 	}
 
-	public String getMostRecentPurchase() {
-		
-		return lastPurchase.toString();	
+	public Purchase getMostRecentPurchase() {
+
+		return lastPurchase;
 	}
 
-	public String getMostRecentPayment() {
+	public Payment getMostRecentPayment() {
 
-		return lastPayment.toString();
+		return lastPayment;
 	}
 
 	// only has some of the info
@@ -158,6 +164,11 @@ public class CreditCard {
 		if (!other.creditCardID.equals(creditCardID)) {
 			return false;
 		}
+
+		if (!other.creditCardID.equals(creditCardID)) {
+			return false;
+		}
+	
 		return true;
 	}
 }

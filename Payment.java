@@ -1,20 +1,26 @@
+package finalProject;
 
-public class Payment {
+import java.time.LocalDate;
+
+public class Payment extends Transaction {
 	private PaymentType paymentType;
 	private BankAccount account;
-	public Payment() {
+	
+	public Payment(LocalDate transactionDate, TransactionType transactionType, double amount, PaymentType paymentType,
+			BankAccount account) {
 		
+		super(transactionDate,transactionType, amount);
+		this.account = account;
+	
 	}
-	public PaymentType getPaymentType() {
-		return paymentType;
-	}
+	
 	public void setPaymentType(PaymentType paymentType) {
 		this.paymentType = paymentType;
 	}
 	public BankAccount getAccount() {
 		return account;
 	}
-	public void setAccount(BankAccount account) {
-		this.account = account;
-	}
+	
+	
+	
 }

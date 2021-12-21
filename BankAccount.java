@@ -1,14 +1,17 @@
+package finalProject;
 
 public class BankAccount {
-	private String BankName;
-	public BankAccount() {
-		
+	private String bankName;
+	private String accountID;
+	public BankAccount(String bankName, String accountID) {
+		this.bankName = bankName;
+		this.accountID = accountID;
 	}
 	public String getBankName() {
-		return BankName;
+		return bankName;
 	}
 	public void setBankName(String bankName) {
-		BankName = bankName;
+		this.bankName = bankName;
 	}
 	public String getAccountID() {
 		return AccountID;

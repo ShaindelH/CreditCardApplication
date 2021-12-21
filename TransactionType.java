@@ -1,3 +1,4 @@
+package finalProject;
 
 public class TransactionType {
 	private Purchase purchase;
