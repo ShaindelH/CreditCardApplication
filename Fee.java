@@ -5,9 +5,9 @@ import java.time.LocalDate;
 public class Fee extends Transaction{
 	private FeeType feeType;
 	
-	public Fee (LocalDate transactionDate, TransactionType transactionType, double amount, FeeType feeType) {
+	public Fee (LocalDate transactionDate, double amount, FeeType feeType) {
 		
-		super(transactionDate, transactionType, amount);
+		super(transactionDate, TransactionType.FEE, amount);
 		this.feeType = feeType;
 		
 	}

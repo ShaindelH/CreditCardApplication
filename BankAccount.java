@@ -3,6 +3,7 @@ package finalProject;
 public class BankAccount {
 	private String bankName;
 	private String accountID;
+	
 	public BankAccount(String bankName, String accountID) {
 		this.bankName = bankName;
 		this.accountID = accountID;
@@ -14,11 +15,10 @@ public class BankAccount {
 		this.bankName = bankName;
 	}
 	public String getAccountID() {
-		return AccountID;
+		return accountID;
 	}
 	public void setAccountID(String accountID) {
-		AccountID = accountID;
+		this.accountID = accountID;
 	}
-	private String AccountID;
 
 }

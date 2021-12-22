@@ -6,12 +6,16 @@ public class Payment extends Transaction {
 	private PaymentType paymentType;
 	private BankAccount account;
 	
-	public Payment(LocalDate transactionDate, TransactionType transactionType, double amount, PaymentType paymentType,
-			BankAccount account) {
+	public Payment(LocalDate transactionDate, double amount, PaymentType paymentType, BankAccount account) {
 		
-		super(transactionDate,transactionType, amount);
+		super(transactionDate,TransactionType.PAYMENT, amount);
 		this.account = account;
+	}
 	
+	public Payment(LocalDate transactionDate, double amount, PaymentType paymentType,String bankName, String accountID) {
+		
+		super(transactionDate,TransactionType.PAYMENT, amount);
+		this.account = new BankAccount(bankName, accountID);
 	}
 	
 	public void setPaymentType(PaymentType paymentType) {

@@ -40,11 +40,10 @@ public class CreditCard {
 		return creditCardID;
 	}
 
-	public void addPurchase(LocalDate transactionDate, TransactionType transactionType, double amount, PurchaseType purchaseType,
-			Vendor vendor) throws InsuffienctFundsException {
+	public void addPurchase(LocalDate transactionDate, double amount, PurchaseType purchaseType, Vendor vendor) throws InsuffienctFundsException {
 
 		if (amount <= getAvailCredit()) {
-			Purchase newPurchase = new Purchase(transactionDate, transactionType, amount, purchaseType, vendor);
+			Purchase newPurchase = new Purchase(transactionDate, amount, purchaseType, vendor);
 			transactions.add(newPurchase);
 
 			lastPurchase = newPurchase;
@@ -52,11 +51,11 @@ public class CreditCard {
 			throw new InsuffienctFundsException();
 	}
 
-	public void addPayment(LocalDate transactionDate, TransactionType transactionType, double amount, PaymentType paymentType,
+	public void addPayment(LocalDate transactionDate, double amount, PaymentType paymentType,
 			BankAccount account) throws InsuffienctFundsException {
 
 		if (amount <= getAvailCredit()) {
-			Payment newPayment = new Payment(transactionDate, transactionType, amount, paymentType, account);
+			Payment newPayment = new Payment(transactionDate, amount, paymentType, account);
 			transactions.add(newPayment);
 
 			lastPayment = newPayment;
@@ -65,11 +64,11 @@ public class CreditCard {
 			throw new InsuffienctFundsException();
 	}
 
-	public void addFee(LocalDate transactionDate, TransactionType transactionType, double amount, FeeType feeType)
+	public void addFee(LocalDate transactionDate, double amount, FeeType feeType)
 			throws InsuffienctFundsException {
 
 		if (amount <= getAvailCredit()) {
-			transactions.add(new Fee(transactionDate, transactionType, amount, feeType));
+			transactions.add(new Fee(transactionDate, amount, feeType));
 		} else
 			throw new InsuffienctFundsException();
 	}

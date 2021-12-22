@@ -49,6 +49,14 @@ public class CreditCards {
 
 		return totalCredit;
 	}
+	
+	public Purchase getMostRecentPurchase(String creditCardID) {
+		return creditCards.get(getCardIndex(creditCardID)).getMostRecentPurchase();
+	}
+	
+	public Payment getMostRecentPayment(String creditCardID) {
+		return creditCards.get(getCardIndex(creditCardID)).getMostRecentPayment();
+	}
 
 	public void addCard(String creditCardID, LocalDate issueDate, LocalDate expirationDate, String issueCompany,
 			CreditCardType creditCardType, CreditCardStatus status, double creditCardLimit, double currentBalance) {
@@ -59,6 +67,14 @@ public class CreditCards {
 		if (!creditCards.contains(newCC)) {
 			creditCards.add(newCC);
 		}
+	}
+	
+	public double getCardBalance(String creditCardID) {
+		return creditCards.get(getCardIndex(creditCardID)).getCurrentBalance();
+	}
+	
+	public double getCardCredit(String creditCardID) {
+		return creditCards.get(getCardIndex(creditCardID)).getAvailCredit();
 	}
 	
 	public void removeCard(String creditCardID) {
@@ -73,7 +89,7 @@ public class CreditCards {
 
 	public boolean findCard(String creditCardID) {
 
-		if (getCardIndex(creditCardID) > 0 ) {
+		if (getCardIndex(creditCardID) > 0) {
 			return true;
 		}
 		return false;
@@ -82,8 +98,7 @@ public class CreditCards {
 	public int getCardIndex(String creditCardID) {
 		
 		for (int i = 0; i < creditCards.size(); i++) {
-			
-			if(creditCardID.equals(creditCards.get(i).getCreditCardID())){
+			if(creditCardID.compareTo(creditCards.get(i).getCreditCardID()) == 0){
 				return i;
 			}
 		}
@@ -91,35 +106,32 @@ public class CreditCards {
 		return -1;
 	}
 
-	public void addPurchase(String creditCardID, LocalDate transactionDate, TransactionType transactionType,
-			PurchaseType purchaseType, Vendor vendor, double amount) {
+	public void addPurchase(String creditCardID, LocalDate transactionDate, PurchaseType purchaseType, Vendor vendor, double amount) {
 
 		int cardIndex = getCardIndex(creditCardID);
 		if (cardIndex > 0 ) {
-			creditCards.get(cardIndex).addPurchase(transactionDate, transactionType, amount, purchaseType, vendor);
+			creditCards.get(cardIndex).addPurchase(transactionDate, amount, purchaseType, vendor);
 		}
 		else 
 			throw new NoSuchElementException();
 
 	}
 
-	public void addPayment(String creditCardID, LocalDate transactionDate, TransactionType transactionType,
-			PaymentType paymentType, BankAccount account, double amount) {
+	public void addPayment(String creditCardID, LocalDate transactionDate, PaymentType paymentType, BankAccount account, double amount) {
 		
 		int cardIndex = getCardIndex(creditCardID);
 		if (cardIndex > 0 ) {
-			creditCards.get(cardIndex).addPayment(transactionDate, transactionType, amount, paymentType, account);
+			creditCards.get(cardIndex).addPayment(transactionDate, amount, paymentType, account);
 		}
 		else 
 			throw new NoSuchElementException();
 	}
 
-	public void addFee(String creditCardID, LocalDate transactionDate, TransactionType transactionType, FeeType feeType,
-			double amount) {
+	public void addFee(String creditCardID, LocalDate transactionDate, FeeType feeType, double amount) {
 
 		int cardIndex = getCardIndex(creditCardID);
 		if (cardIndex > 0 ) {
-			creditCards.get(cardIndex).addFee(transactionDate, transactionType, amount, feeType);
+			creditCards.get(cardIndex).addFee(transactionDate, amount, feeType);
 		}
 		else 
 			throw new NoSuchElementException();
