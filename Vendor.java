@@ -31,4 +31,9 @@ public class Vendor {
 	public Address getAddress() {
 		return address;
 	}
+	
+	@Override
+	public String toString() {
+		return "\nVendor: " +name;	
+	}
 }

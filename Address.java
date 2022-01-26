@@ -45,4 +45,14 @@ public class Address {
 	public String getZipCode() {
 		return zipCode;
 	}
+	
+	@Override
+	public String toString() {
+		StringBuilder str = new StringBuilder();
+		str.append(street);
+		str.append("\n" + city);
+		str.append(", " + usState);
+		str.append("\n" + zipCode);
+		return str.toString();
+	}
 }

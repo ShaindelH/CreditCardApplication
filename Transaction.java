@@ -13,17 +13,16 @@ public class Transaction {
 	public Transaction(LocalDate transactionDate, TransactionType transactionType, double amount) {
 		
 		transactionID = idCounter;
+		lastTransactionID = idCounter;
 		this.transactionDate = transactionDate;
 		this.transactionType = transactionType;
 		this.amount = amount;
-		
 		idCounter++;
 	}
 	public long getTransactionID() {
 		return transactionID;
 	}
 	
-	//figure out last transaction - maybe static
 	public long getLastTransactionID() {
 		return lastTransactionID;
 	}
@@ -63,8 +62,19 @@ public class Transaction {
 		else {
 			return 0;
 		}
-
 	}
+	
+	@Override
+	public String toString() {
+		
+		StringBuilder str = new StringBuilder();
+		str.append("\nTransaction: \n----------");
+		str.append("\nTransaction Type: " + transactionType);
+		str.append("\nDate: " + transactionDate);
+		str.append("\nAmount "+amount);
+		return str.toString();
+	}
+
 	
 
 }

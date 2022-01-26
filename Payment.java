@@ -25,6 +25,12 @@ public class Payment extends Transaction {
 		return account;
 	}
 	
-	
-	
+	@Override
+	public String toString() {
+		StringBuilder str = new StringBuilder();
+		str.append(super.toString());
+		str.append("\nPayment Type: "+paymentType);
+		str.append("\nBank Account: "+account);
+		return str.toString();
+	}
 }

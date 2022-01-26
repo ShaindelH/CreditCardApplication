@@ -1,8 +1,25 @@
 package finalProject;
 
-public enum USState { Alabama, Alaska, Arizona, Arkansas, California, Colorado, Connecticut, 
-	Delaware, Florida, Georgia, Hawaii, Idaho, Illinois, Indiana, Iowa, Kansas, Kentucky, 
-	Louisiana, Maine, Maryland, Massachusetts, Michigan, Minnesota, Mississippi, Missouri, 
-	Montana, Nebraska, Nevada, NewHampshire, NewJersey, NewMexico, NewYork, NorthCarolina, 
-	NorthDakota, Ohio, Oklahoma, Oregon, Pennsylvania, RhodeIsland, SouthCarolina, SouthDakota, 
-	Tennessee, Texas, Utah, Vermont, Virginia, Washington, WestVirginia, Wisconsin, Wyoming}
+public enum USState { ALABAMA, ALASKA, ARIZONA, ARKANSAS, CALIFORNIA, COLORADO, CONNECTICUT, 
+	DELAWARE, FLORIDA, GEORGIA, HAWAII, IDAHO, ILLINOIS, INDIANA, IOWA, KANSAS, KENTUCKY, 
+	LOUISIANA, MAINE, MARYLAND, MASSACHUSETTS, MICHIGAN, MINNESOTA, MISSISSIPPI, MISSOURI, 
+	MONTANA, NEBRASKA, NEVADA, NEWHAMPSHIRE, NEWJERSEY, NEWMEXICO, NEWYORK, NORTHCAROLINA, 
+	NORTHDAKOTA, OHIO, OKLAHOMA, OREGON, PENNSYLVANIA, RHODEISLAND, SOUTHCAROLINA, SOUTHDAKOTA, 
+	TENNESSEE, TEXAS, UTAH, VERMONT, VIRGINA, WASHINGTON, WESTVIRGINIA, WISCONSIN, WYOMING;
+	
+
+	public static boolean isValidState(String state) {
+		USState[] states = USState.values();
+		
+		String stateCaps = state.toUpperCase();
+		
+		for (USState currState : states) {
+			if(currState.toString().equals(stateCaps)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+}
+

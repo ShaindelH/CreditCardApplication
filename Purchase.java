@@ -34,4 +34,15 @@ public class Purchase extends Transaction {
 	public Vendor getVendor() {
 		return vendor;
 	}
+	
+	@Override
+	public String toString() {
+		
+		StringBuilder str = new StringBuilder();
+		str.append(super.toString());
+		str.append("\nPurchase Type: " + purchaseType);
+		str.append(vendor.toString());
+		return str.toString();
+		
+	}
 }
